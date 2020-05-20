@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf Demo</title>
+</head>
+
+<style>
+    .btn {
+        height: 30px;
+        padding: 0 10px 0 10px;
+        background-color: dodgerblue;
+        border-radius: 5px;
+        color: white;
+    }
+</style>
+
+<body>
+<div th:replace="~{fragments/header::header}"></div>
+<h3 style="text-align: center;" th:text="${userModel.title}">TITLE</h3>
+<div style="text-align: center;">
+    姓名：<input type="text" name="keyword" id="keyword">
+    <button type="button" class="btn btn-info btn-sm" th:onclick="window.location.href = '/users/search?keyword=' + document.getElementById('keyword').value">查询用户</button>
+    <button type="button" class="btn btn-info btn-sm" th:onclick="window.location.href = '/users/form'">创建用户</button>
+</div>
+<div style="text-align: center;">
+    <table border="1" style="margin: 0 auto;">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+            <th>籍贯</th>
+            <th>QQ</th>
+            <th>邮箱</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${userModel.userList.size()} eq 0">
+            <td colspan="8">没有用户信息！</td>
+        </tr>
+        <tr th:each="user : ${userModel.userList}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:if="${user.sex} eq 1">男</td>
+            <td th:if="${user.sex} eq 0">女</td>
+            <td th:text="${user.age}"></td>
+            <td th:text="${user.location}"></td>
+            <td th:text="${user.qq}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <div>
+                    <a th:href="@{'/users/delete/' + ${user.id}}">删除</a>
+                    <a th:href="@{'/users/modify/' + ${user.id}}">修改</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{fragments/footer::footer}"></div>
+</body>
+</html>
